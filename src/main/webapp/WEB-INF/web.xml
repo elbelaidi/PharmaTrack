@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <display-name>Pharmacy Management System</display-name>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- Servlets -->
+    <servlet>
+        <servlet-name>MedicationServlet</servlet-name>
+        <servlet-class>com.pharmacy.web.MedicationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SupplierServlet</servlet-name>
+        <servlet-class>com.pharmacy.web.SupplierServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaleServlet</servlet-name>
+        <servlet-class>com.pharmacy.web.SaleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaleViewServlet</servlet-name>
+        <servlet-class>com.pharmacy.web.SaleViewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.pharmacy.web.DashboardServlet</servlet-class>
+    </servlet>
+
+    <!-- Servlet Mappings -->
+    <servlet-mapping>
+        <servlet-name>MedicationServlet</servlet-name>
+        <url-pattern>/medications/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SupplierServlet</servlet-name>
+        <url-pattern>/suppliers/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaleServlet</servlet-name>
+        <url-pattern>/sales/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaleViewServlet</servlet-name>
+        <url-pattern>/sales/view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <!-- API Servlet Mappings -->
+    <servlet>
+        <servlet-name>UserApiServlet</servlet-name>
+        <servlet-class>com.pharmacy.api.UserApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserApiServlet</servlet-name>
+        <url-pattern>/api/users/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MedicationApiServlet</servlet-name>
+        <servlet-class>com.pharmacy.api.MedicationApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MedicationApiServlet</servlet-name>
+        <url-pattern>/api/medications/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SupplierApiServlet</servlet-name>
+        <servlet-class>com.pharmacy.api.SupplierApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SupplierApiServlet</servlet-name>
+        <url-pattern>/api/suppliers/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Removed duplicate servlet registration for SaleApiServlet to avoid conflict with annotation -->
+    <!--
+    <servlet>
+        <servlet-name>SaleApiServlet</servlet-name>
+        <servlet-class>com.pharmacy.api.SaleApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SaleApiServlet</servlet-name>
+        <url-pattern>/api/sales/*</url-pattern>
+    </servlet-mapping>
+    -->
+
+    <!-- Security Constraints -->
+    <!--
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected Area</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>user</role-name>
+        </auth-constraint>
+    </security-constraint>
+    -->
+
+    <!--
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login</form-login-page>
+            <form-error-page>/login?error=true</form-error-page>
+        </form-login-config>
+    </login-config>
+    -->
+
+    <!-- Error Pages -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/error/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/error/500.jsp</location>
+    </error-page>
+
+</web-app>

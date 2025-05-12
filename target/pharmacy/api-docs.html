@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Management System API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #16a085;
+            margin-top: 20px;
+        }
+        .endpoint {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .method {
+            font-weight: bold;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .get {
+            background-color: #27ae60;
+        }
+        .post {
+            background-color: #f39c12;
+        }
+        .put {
+            background-color: #3498db;
+        }
+        .delete {
+            background-color: #e74c3c;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pharmacy Management System API Documentation</h1>
+    
+    <p>This document provides information about the RESTful API endpoints available in the Pharmacy Management System.</p>
+    
+    <h2>Authentication</h2>
+    <p>The API currently uses the same authentication mechanism as the web application. You need to be logged in to access the API endpoints.</p>
+    
+    <h2>API Endpoints</h2>
+    
+    <h3>Users</h3>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/users</code>
+        <p>Retrieves a list of all users.</p>
+        <h4>Response</h4>
+        <pre>
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "fullName": "Admin User",
+    "email": "admin@example.com",
+    "phoneNumber": "1234567890",
+    "role": "ADMIN",
+    "active": true,
+    "createdAt": "2023-01-01 00:00:00",
+    "lastLogin": "2023-01-01 00:00:00"
+  },
+  ...
+]
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/users/{id}</code>
+        <p>Retrieves a specific user by ID.</p>
+        <h4>Response</h4>
+        <pre>
+{
+  "id": 1,
+  "username": "admin",
+  "fullName": "Admin User",
+  "email": "admin@example.com",
+  "phoneNumber": "1234567890",
+  "role": "ADMIN",
+  "active": true,
+  "createdAt": "2023-01-01 00:00:00",
+  "lastLogin": "2023-01-01 00:00:00"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method post">POST</span> <code>/api/users</code>
+        <p>Creates a new user.</p>
+        <h4>Request Body</h4>
+        <pre>
+{
+  "username": "newuser",
+  "password": "password123",
+  "fullName": "New User",
+  "email": "newuser@example.com",
+  "phoneNumber": "1234567890",
+  "role": "PHARMACIST",
+  "active": true
+}
+        </pre>
+        <h4>Response</h4>
+        <pre>
+{
+  "id": 3,
+  "username": "newuser",
+  "message": "User created successfully"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method put">PUT</span> <code>/api/users/{id}</code>
+        <p>Updates an existing user.</p>
+        <h4>Request Body</h4>
+        <pre>
+{
+  "username": "updateduser",
+  "password": "newpassword",
+  "fullName": "Updated User",
+  "email": "updated@example.com",
+  "phoneNumber": "9876543210",
+  "role": "PHARMACIST",
+  "active": true
+}
+        </pre>
+        <h4>Response</h4>
+        <pre>
+{
+  "message": "User updated successfully"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method delete">DELETE</span> <code>/api/users/{id}</code>
+        <p>Deletes a user.</p>
+        <h4>Response</h4>
+        <pre>
+{
+  "message": "User deleted successfully"
+}
+        </pre>
+    </div>
+    
+    <h3>Medications</h3>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/medications</code>
+        <p>Retrieves a list of all medications.</p>
+        <h4>Response</h4>
+        <pre>
+[
+  {
+    "id": 1,
+    "name": "Paracetamol",
+    "code": "PARA-500",
+    "description": "Pain reliever and fever reducer",
+    "type": "Tablet",
+    "dosage": "500mg",
+    "price": 5.99,
+    "stock": 100,
+    "alertThreshold": 20,
+    "expirationDate": "2024-12-31",
+    "supplierId": 1,
+    "createdAt": "2023-01-01 00:00:00",
+    "updatedAt": "2023-01-01 00:00:00"
+  },
+  ...
+]
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/medications/{id}</code>
+        <p>Retrieves a specific medication by ID.</p>
+        <h4>Response</h4>
+        <pre>
+{
+  "id": 1,
+  "name": "Paracetamol",
+  "code": "PARA-500",
+  "description": "Pain reliever and fever reducer",
+  "type": "Tablet",
+  "dosage": "500mg",
+  "price": 5.99,
+  "stock": 100,
+  "alertThreshold": 20,
+  "expirationDate": "2024-12-31",
+  "supplierId": 1,
+  "createdAt": "2023-01-01 00:00:00",
+  "updatedAt": "2023-01-01 00:00:00"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method post">POST</span> <code>/api/medications</code>
+        <p>Creates a new medication.</p>
+        <h4>Request Body</h4>
+        <pre>
+{
+  "name": "Ibuprofen",
+  "code": "IBU-400",
+  "description": "Anti-inflammatory drug",
+  "type": "Tablet",
+  "dosage": "400mg",
+  "price": 7.99,
+  "stock": 50,
+  "alertThreshold": 10,
+  "expirationDate": "2024-06-30",
+  "supplierId": 1
+}
+        </pre>
+        <h4>Response</h4>
+        <pre>
+{
+  "id": 2,
+  "name": "Ibuprofen",
+  "message": "Medication created successfully"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method put">PUT</span> <code>/api/medications/{id}</code>
+        <p>Updates an existing medication.</p>
+        <h4>Request Body</h4>
+        <pre>
+{
+  "name": "Ibuprofen",
+  "code": "IBU-400",
+  "description": "Updated description",
+  "type": "Tablet",
+  "dosage": "400mg",
+  "price": 8.99,
+  "stock": 60,
+  "alertThreshold": 15,
+  "expirationDate": "2024-06-30",
+  "supplierId": 1
+}
+        </pre>
+        <h4>Response</h4>
+        <pre>
+{
+  "message": "Medication updated successfully"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method delete">DELETE</span> <code>/api/medications/{id}</code>
+        <p>Deletes a medication.</p>
+        <h4>Response</h4>
+        <pre>
+{
+  "message": "Medication deleted successfully"
+}
+        </pre>
+    </div>
+    
+    <h3>Suppliers</h3>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/suppliers</code>
+        <p>Retrieves a list of all suppliers.</p>
+        <h4>Response</h4>
+        <pre>
+[
+  {
+    "id": 1,
+    "name": "PharmaCorp",
+    "code": "PC-001",
+    "contactPerson": "John Doe",
+    "phoneNumber": "1234567890",
+    "email": "contact@pharmacorp.com",
+    "address": "123 Pharma St, MedCity",
+    "notes": "Reliable supplier",
+    "active": true,
+    "createdAt": "2023-01-01 00:00:00",
+    "updatedAt": "2023-01-01 00:00:00"
+  },
+  ...
+]
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/suppliers/{id}</code>
+        <p>Retrieves a specific supplier by ID.</p>
+        <h4>Response</h4>
+        <pre>
+{
+  "id": 1,
+  "name": "PharmaCorp",
+  "code": "PC-001",
+  "contactPerson": "John Doe",
+  "phoneNumber": "1234567890",
+  "email": "contact@pharmacorp.com",
+  "address": "123 Pharma St, MedCity",
+  "notes": "Reliable supplier",
+  "active": true,
+  "createdAt": "2023-01-01 00:00:00",
+  "updatedAt": "2023-01-01 00:00:00"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method post">POST</span> <code>/api/suppliers</code>
+        <p>Creates a new supplier.</p>
+        <h4>Request Body</h4>
+        <pre>
+{
+  "name": "MediSupply",
+  "code": "MS-002",
+  "contactPerson": "Jane Smith",
+  "phoneNumber": "9876543210",
+  "email": "contact@medisupply.com",
+  "address": "456 Supply Ave, PharmaTown",
+  "notes": "New supplier",
+  "active": true
+}
+        </pre>
+        <h4>Response</h4>
+        <pre>
+{
+  "id": 2,
+  "name": "MediSupply",
+  "message": "Supplier created successfully"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method put">PUT</span> <code>/api/suppliers/{id}</code>
+        <p>Updates an existing supplier.</p>
+        <h4>Request Body</h4>
+        <pre>
+{
+  "name": "MediSupply",
+  "code": "MS-002",
+  "contactPerson": "Jane Smith",
+  "phoneNumber": "9876543210",
+  "email": "updated@medisupply.com",
+  "address": "456 Supply Ave, PharmaTown",
+  "notes": "Updated notes",
+  "active": true
+}
+        </pre>
+        <h4>Response</h4>
+        <pre>
+{
+  "message": "Supplier updated successfully"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method delete">DELETE</span> <code>/api/suppliers/{id}</code>
+        <p>Deletes a supplier.</p>
+        <h4>Response</h4>
+        <pre>
+{
+  "message": "Supplier deleted successfully"
+}
+        </pre>
+    </div>
+    
+    <h3>Sales</h3>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/sales</code>
+        <p>Retrieves a list of all sales.</p>
+        <h4>Response</h4>
+        <pre>
+[
+  {
+    "id": 1,
+    "invoiceNumber": "INV-001",
+    "customerName": "John Customer",
+    "customerPhone": "1234567890",
+    "totalAmount": 25.98,
+    "userId": 1,
+    "saleDate": "2023-01-15 14:30:00",
+    "items": [
+      {
+        "id": 1,
+        "medicationId": 1,
+        "quantity": 2,
+        "unitPrice": 5.99,
+        "totalPrice": 11.98
+      },
+      {
+        "id": 2,
+        "medicationId": 2,
+        "quantity": 1,
+        "unitPrice": 14.00,
+        "totalPrice": 14.00
+      }
+    ]
+  },
+  ...
+]
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/sales/{id}</code>
+        <p>Retrieves a specific sale by ID.</p>
+        <h4>Response</h4>
+        <pre>
+{
+  "id": 1,
+  "invoiceNumber": "INV-001",
+  "customerName": "John Customer",
+  "customerPhone": "1234567890",
+  "totalAmount": 25.98,
+  "userId": 1,
+  "saleDate": "2023-01-15 14:30:00",
+  "items": [
+    {
+      "id": 1,
+      "medicationId": 1,
+      "quantity": 2,
+      "unitPrice": 5.99,
+      "totalPrice": 11.98
+    },
+    {
+      "id": 2,
+      "medicationId": 2,
+      "quantity": 1,
+      "unitPrice": 14.00,
+      "totalPrice": 14.00
+    }
+  ]
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method post">POST</span> <code>/api/sales</code>
+        <p>Creates a new sale.</p>
+        <h4>Request Body</h4>
+        <pre>
+{
+  "invoiceNumber": "INV-002",
+  "customerName": "Jane Customer",
+  "customerPhone": "9876543210",
+  "userId": 1,
+  "items": [
+    {
+      "medicationId": 1,
+      "quantity": 3
+    },
+    {
+      "medicationId": 2,
+      "quantity": 2
+    }
+  ]
+}
+        </pre>
+        <h4>Response</h4>
+        <pre>
+{
+  "id": 2,
+  "invoiceNumber": "INV-002",
+  "message": "Sale created successfully"
+}
+        </pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method delete">DELETE</span> <code>/api/sales/{id}</code>
+        <p>Deletes a sale.</p>
+        <h4>Response</h4>
+        <pre>
+{
+  "message": "Sale deleted successfully"
+}
+        </pre>
+    </div>
+    
+    <h2>Error Handling</h2>
+    <p>All API endpoints return appropriate HTTP status codes:</p>
+    <ul>
+        <li><strong>200 OK</strong>: The request was successful</li>
+        <li><strong>201 Created</strong>: A new resource was created successfully</li>
+        <li><strong>400 Bad Request</strong>: The request was invalid or cannot be served</li>
+        <li><strong>404 Not Found</strong>: The requested resource does not exist</li>
+        <li><strong>500 Internal Server Error</strong>: An error occurred on the server</li>
+    </ul>
+    
+    <p>Error responses include a JSON object with an error message:</p>
+    <pre>
+{
+  "error": "Invalid user ID"
+}
+    </pre>
+    
+    <h2>Notes</h2>
+    <p>This API is designed to be used with the Pharmacy Management System web application. It provides programmatic access to the same data that is available through the web interface.</p>
+    
+    <footer style="margin-top: 50px; border-top: 1px solid #ddd; padding-top: 20px; text-align: center;">
+        <p>Pharmacy Management System API Documentation</p>
+    </footer>
+</body>
+</html>
