@@ -49,11 +49,17 @@
                                         <td><c:out value="${sale.customerPhone}" /></td>
                                         <td><c:out value="${sale.totalAmount}" /></td>
                                         <td><fmt:formatDate value="${sale.saleDate}" pattern="MM/dd/yyyy HH:mm" /></td>
-                                        <td>
-                                            <a href="${pageContext.request.contextPath}/sales/view?id=${sale.id}" class="btn btn-primary btn-sm">View</a>
-                                            <a href="${pageContext.request.contextPath}/sales/edit?id=${sale.id}" class="btn btn-warning btn-sm ms-1">Update</a>
-<button type="button" class="btn btn-danger btn-sm ms-1" onclick="deleteSale('${sale.id}')">Delete</button>
-                                        </td>
+<td>
+    <a href="${pageContext.request.contextPath}/sales/view?id=${sale.id}" class="btn btn-primary btn-sm" title="View">
+        <i class="bi bi-eye"></i>
+    </a>
+    <a href="${pageContext.request.contextPath}/sales/edit?id=${sale.id}" class="btn btn-warning btn-sm ms-1" title="Update">
+        <i class="bi bi-pencil"></i>
+    </a>
+    <button type="button" class="btn btn-danger btn-sm ms-1" onclick="deleteSale('${sale.id}')" title="Delete">
+        <i class="bi bi-trash"></i>
+    </button>
+</td>
                                     </tr>
                                 </c:forEach>
                                 <c:if test="${empty sales}">
