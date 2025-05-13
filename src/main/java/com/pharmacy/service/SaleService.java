@@ -80,7 +80,9 @@ public class SaleService implements BaseService<Sale> {
 
     @Override
     public void delete(Long id) {
+        System.out.println("SaleService: Deleting sale with ID: " + id);
         saleDAO.delete(id);
+        System.out.println("SaleService: Deleted sale with ID: " + id);
     }
 
     private BigDecimal calculateTotalAmount(List<SaleItem> items) {

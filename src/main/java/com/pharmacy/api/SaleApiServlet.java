@@ -188,33 +188,51 @@ public class SaleApiServlet extends BaseApiServlet {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         setupResponse(response);
-        
-        String pathInfo = request.getPathInfo();
-        
+
+        String pathInfo = request.getPathInfo(); // e.g., "/56"
+        System.out.println("Raw pathInfo: " + pathInfo);
         if (pathInfo == null || pathInfo.equals("/")) {
             sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Sale ID is required");
             return;
         }
-        
+
+        // Extract ID from path
+        String[] pathParts = pathInfo.split("/");
+        System.out.println("Path parts length: " + pathParts.length);
+        for (int i = 0; i < pathParts.length; i++) {
+            System.out.println("pathParts[" + i + "]: '" + pathParts[i] + "'");
+        }
+        if (pathParts.length != 2) {
+            sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid URL format. Expected /{id}");
+            return;
+        }
+
+        Long saleId;
         try {
-            Long id = Long.parseLong(pathInfo.substring(1));
-            Sale existingSale = saleService.findById(id);
-            
-            if (existingSale == null) {
-                sendError(response, HttpServletResponse.SC_NOT_FOUND, "Sale not found");
-                return;
-            }
-            
-            // Delete the sale
-            saleService.delete(id);
-            
-            // Return success message
-            String json = "{\"message\":\"Sale deleted successfully\"}";
-            writeJsonResponse(response, json);
+            saleId = Long.parseLong(pathParts[1]);
+            System.out.println("Extracted sale ID: " + saleId);
         } catch (NumberFormatException e) {
-            sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid sale ID");
+            sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid sale ID format");
+            return;
+        }
+
+        Sale existingSale = saleService.findById(saleId);
+        if (existingSale == null) {
+            sendError(response, HttpServletResponse.SC_NOT_FOUND, "Sale with ID " + saleId + " not found");
+            return;
+        }
+
+        try {
+            System.out.println("Deleting sale with ID: " + saleId);
+            saleService.delete(saleId);
+            System.out.println("Deleted sale with ID: " + saleId);
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204 No Content
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error deleting sale: " + e.getMessage());
         }
     }
+
 
     /**
      * Parses a JSON string into a Sale object.

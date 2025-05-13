@@ -96,22 +96,29 @@ public class SaleDAO implements BaseDAO<Sale> {
         return null;
     }
 
+    
     @Override
     public Sale update(Sale sale) {
         String sql = "UPDATE sales SET invoice_number = ?, customer_name = ?, customer_phone = ?, " +
                     "total_amount = ?, user_id = ?, sale_date = ? WHERE id = ?";
         try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
             setSaleParameters(stmt, sale);
             stmt.setLong(7, sale.getId());
             
-            stmt.executeUpdate();
-            updateSaleItems(sale);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                System.out.println("No rows updated. The sale might not exist.");
+            } else {
+                updateSaleItems(sale);
+            }
         } catch (SQLException e) {
+            System.err.println("Error executing update: " + e.getMessage());
             e.printStackTrace();
         }
         return sale;
     }
+
 
     @Override
     public void delete(Long id) {
@@ -119,7 +126,12 @@ public class SaleDAO implements BaseDAO<Sale> {
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
-            stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                System.err.println("No sale found with id " + id + " to delete.");
+            } else {
+                System.out.println("Sale with id " + id + " deleted successfully.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

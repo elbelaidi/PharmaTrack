@@ -79,7 +79,7 @@
 <script>
     function deleteSale(saleId) {
         if (confirm('Are you sure you want to delete this sale?')) {
-            fetch(`${window.location.origin}/api/sales/${saleId}`, {
+            fetch(`http://localhost:8081/api/sales/${saleId}`, {
                 method: 'DELETE'
             })
             .then(response => {
