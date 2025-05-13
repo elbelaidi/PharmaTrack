@@ -6,13 +6,69 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
+<style>
+    .card {
+        border-radius: 16px;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .main-content {
+        padding: 30px;
+        background-color: #f0f2f5;
+        min-height: 100vh;
+    }
+
+    .alert {
+        border-radius: 12px;
+        font-size: 0.95rem;
+    }
+
+    table th, table td {
+        vertical-align: middle;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .btn-outline-primary {
+        border-radius: 8px;
+    }
+    
+    /* Chart container styles */
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .chart-container {
+            height: 250px;
+        }
+    }
+</style>
+
 <div class="main-content">
-
-    <div class="row">
-        <!-- Debug Info Section -->
-            
-    </div>
-
     <div class="row">
         <!-- Alerts Section -->
         <div class="col-md-6 mb-4">
@@ -53,7 +109,7 @@
                     <h5 class="card-title mb-0">Today's Sales</h5>
                 </div>
                 <div class="card-body">
-                    <h2 class="text-primary">$<fmt:formatNumber value="${todaySales}" type="currency" currencySymbol=""/></h2>
+                    <h2 class="text-success">$<fmt:formatNumber value="${todaySales}" type="currency" currencySymbol=""/></h2>
                     <p class="text-muted">Total sales for today</p>
                 </div>
             </div>
@@ -63,24 +119,28 @@
     <div class="row">
         <!-- Medicine Types Pie Chart -->
         <div class="col-md-6 mb-4">
-            <div class="card" style="height: 350px; border: 1px solid #dee2e6;">
+            <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Medicine Types Overview</h5>
                 </div>
-                <div class="card-body" style="padding: 10px;">
-                    <canvas id="medicineTypesChart" width="300" height="200" style="display: block; margin: 0 auto;"></canvas>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="medicineTypesChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Sales Chart -->
         <div class="col-md-6 mb-4">
-            <div class="card" style="height: 350px;">
+            <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Sales Overview</h5>
                 </div>
-                <div class="card-body" style="padding: 10px;">
-                    <canvas id="salesChart" style="width: 100%; height: 250px;"></canvas>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="salesChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,58 +191,59 @@
             </div>
         </div>
     </div>
-
-</div> <!-- End main-content -->
+</div>
 
 <script>
-    console.log('medicationTypesJson:', '${medicationTypesJson}');
-    console.log('medicationCountsJson:', '${medicationCountsJson}');
-
+    // Sales Chart
     const ctx = document.getElementById('salesChart').getContext('2d');
-    const labels = JSON.parse('${histogramLabelsJson}');
-    const data = JSON.parse('${histogramDataJson}');
-
     new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
-            labels: labels,
+            labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
             datasets: [{
                 label: 'Sales',
-                data: data,
-                backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
+                data: [60, 40, 30, 50, 20, 70, 90],
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                pointBackgroundColor: '#007bff'
             }]
         },
         options: {
             responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 10
-                    }
-                }
-            },
+            maintainAspectRatio: false,
             plugins: {
                 title: {
                     display: true,
-                    text: 'Sales Histogram (Last 7 Days)',
+                    text: 'Weekly Sales Overview',
                     font: {
-                        size: 18,
+                        size: 16,
                         weight: 'bold'
-                    },
-                    color: 'blue'
+                    }
                 },
                 legend: {
                     display: false
                 }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#333' },
+                    grid: { display: false }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 20,
+                        color: '#333'
+                    }
+                }
             }
         }
     });
-</script>
 
-<script>
     // Medicine Types Pie Chart
     const medicineTypesCtx = document.getElementById('medicineTypesChart').getContext('2d');
     const medicineTypesData = JSON.parse('${medicationTypesJson}');
@@ -203,26 +264,18 @@
                     'rgba(153, 102, 255, 0.6)',
                     'rgba(255, 159, 64, 0.6)'
                 ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
+                borderColor: '#fff',
+                borderWidth: 2
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'right',
                     labels: {
-                        font: {
-                            size: 14
-                        }
+                        font: { size: 12 }
                     }
                 },
                 title: {
@@ -238,29 +291,23 @@
                         label: function(context) {
                             let label = context.label || '';
                             let value = context.parsed || 0;
-                            let total = context.chart._metasets[context.datasetIndex].total;
+                            let total = context.dataset.data.reduce((a, b) => a + b, 0);
                             let percentage = total ? (value / total * 100).toFixed(2) : 0;
                             return label + ': ' + value + ' (' + percentage + '%)';
                         }
                     }
-                }
-            },
-            datalabels: {
-                formatter: (value, ctx) => {
-                    let sum = 0;
-                    let dataArr = ctx.chart.data.datasets[0].data;
-                    dataArr.map(data => {
-                        sum += data;
-                    });
-                    let percentage = (value*100 / sum).toFixed(2)+"%";
-                    return percentage;
                 },
-                color: '#fff',
-                anchor: 'center',
-                align: 'center',
-                font: {
-                    weight: 'bold',
-                    size: 14
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                        let percentage = (value * 100 / sum).toFixed(1) + "%";
+                        return percentage;
+                    },
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 12
+                    }
                 }
             }
         },
