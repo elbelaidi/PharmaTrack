@@ -4,70 +4,142 @@
 <%@ include file="../layout/header_temp_v2.jsp" %>
 
 <c:set var="pageTitle" value="Sales" />
-<c:set var="pageActions">
-    <c:url value="/sales/new" var="newSaleUrl" />
-    <c:set var="action" value="${newSaleUrl}" />
-    <c:set var="icon" value="bi-plus-circle" />
-    <c:set var="label" value="Add New Sale" />
-</c:set>
+<c:url value="/sales/new" var="newUrl" />
+<c:set var="icon" value="bi-plus-circle" />
+<c:set var="label" value="New Sale" />
 
-<style scoped>
-    .main-content {
+<style>
+    .btn btn-primary{ 
+        background-color: #4ECDC4;
+    }
+
+.main-content {
         margin-left: 250px;
         margin-top: 70px;
-        padding: 20px;
+        padding: 30px;
+        background-color: #f8f9fa;
+        min-height: calc(100vh - 70px);
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border-radius: 10px;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #4ECDC4 0%, #4ECDC4 100%);
+        padding: 1.2rem;
+    }
+
+    .table th {
+        color: #495057;
+        font-weight: 600;
+    }
+
+    .btn-light {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+        border-radius: 6px;
+    }
+
+    .btn-outline-primary {
+        border-radius: 6px;
+    }
+
+    .table-responsive {
+        margin-top: 10px;
+    }
+    
+    /* New search card styles */
+    .search-container {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: none;
+    }
+    
+    .form-control {
+        border: none;
+    }
+    
+    .form-control:focus {
+        box-shadow: none;
     }
 </style>
 
 <div class="main-content">
-    <div class="container-fluid px-4">
-        <div class="card shadow-sm rounded-3">
-            <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
-                <h5 class="mb-0">${pageTitle}</h5>
-                <a href="${newSaleUrl}" class="btn btn-light text-primary fw-semibold ms-auto">
-                    <i class="${icon} me-1"></i> ${label}
-                </a>
+    <div class="container-fluid">
+        <!-- Search Card -->
+        <div class="search-container mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control" id="searchSale" 
+                               placeholder="Search sales by invoice #, customer or date...">
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-end">
+                    <a href="${newUrl}" class="btn btn-primary">
+                        <i class="${icon} me-1"></i> ${label}
+                    </a>
+                </div>
             </div>
-            <div class="card-body">
+        </div>
+        
+        <!-- Sales Table Card -->
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center text-white">
+                <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>${pageTitle}</h5>
+                <span class="badge bg-light text-primary">Total: ${sales.size()}</span>
+            </div>
+            <div class="card-body p-4">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover align-middle">
-                            <thead class="table-light">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Invoice #</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total Amount</th>
+                                <th class="text-center" style="width: 120px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${sales}" var="sale">
                                 <tr>
-                                    <th>Invoice Number</th>
-                                    <th>Customer Name</th>
-                                    <th>Customer Phone</th>
-                                    <th>Total Amount</th>
-                                    <th>Sale Date</th>
-                                    <th>Actions</th>
+                                    <td>${sale.invoiceNumber}</td>
+                                    <td>${sale.customerName}</td>
+                                    <td><fmt:formatDate value="${sale.saleDate}" pattern="MM/dd/yyyy HH:mm" /></td>
+                                    <td>${sale.items.size()}</td>
+                                    <td>$<fmt:formatNumber value="${sale.totalAmount}" type="currency" currencySymbol="" /></td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="${pageContext.request.contextPath}/sales/view?id=${sale.id}"
+                                               class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="View">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </div>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="sale" items="${sales}">
-                                    <tr>
-                                        <td><c:out value="${sale.invoiceNumber}" /></td>
-                                        <td><c:out value="${sale.customerName}" /></td>
-                                        <td><c:out value="${sale.customerPhone}" /></td>
-                                        <td><c:out value="${sale.totalAmount}" /></td>
-                                        <td><fmt:formatDate value="${sale.saleDate}" pattern="MM/dd/yyyy HH:mm" /></td>
-<td>
-    <a href="${pageContext.request.contextPath}/sales/view?id=${sale.id}" class="btn btn-primary btn-sm" title="View">
-        <i class="bi bi-eye"></i>
-    </a>
-    <a href="${pageContext.request.contextPath}/sales/edit?id=${sale.id}" class="btn btn-warning btn-sm ms-1" title="Update">
-        <i class="bi bi-pencil"></i>
-    </a>
-    <button type="button" class="btn btn-danger btn-sm ms-1" onclick="deleteSale('${sale.id}')" title="Delete">
-        <i class="bi bi-trash"></i>
-    </button>
-</td>
-                                    </tr>
-                                </c:forEach>
-                                <c:if test="${empty sales}">
-                                    <tr>
-                                        <td colspan="6" class="text-center text-muted">No sales found.</td>
-                                    </tr>
-                                </c:if>
-                            </tbody>
+                            </c:forEach>
+                            <c:if test="${empty sales}">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">No sales found.</td>
+                                </tr>
+                            </c:if>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -75,26 +147,23 @@
     </div>
 </div>
 
-
 <script>
-    function deleteSale(saleId) {
-        if (confirm('Are you sure you want to delete this sale?')) {
-            fetch(`http://localhost:8081/api/sales/${saleId}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Sale deleted successfully.');
-                    window.location.reload();
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('searchSale').addEventListener('keyup', function() {
+            let input = this.value.toLowerCase();
+            let rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                let text = row.textContent.toLowerCase();
+                if(text.includes(input)) {
+                    row.style.display = '';
                 } else {
-                    alert('Failed to delete sale.');
+                    row.style.display = 'none';
                 }
-            })
-            .catch(error => {
-                alert('Error deleting sale: ' + error);
             });
-        }
-    }
+        });
+    });
 </script>
 
 <%@ include file="../layout/footer.jsp" %>

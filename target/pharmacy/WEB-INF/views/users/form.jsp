@@ -11,6 +11,11 @@
         margin-top: 70px;
         padding: 20px;
     }
+        .pharmacy-logo {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
 </style>
 
 <div class="main-content">
