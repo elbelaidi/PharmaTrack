@@ -21,23 +21,25 @@ public class SimpleLoginServlet extends BaseServlet {
         forwardToJsp(request, response, "simple-login.jsp");
     }
 
+    
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username").trim();
-        String password = request.getParameter("password").trim();
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    String username = request.getParameter("username").trim();
+    String password = request.getParameter("password").trim();
 
-        User user = userService.findByUsername(username);
+    User user = userService.findByUsername(username);
 
-        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
-            HttpSession session = request.getSession();
-            session.setAttribute(USER_SESSION_KEY, user);
-            System.out.println("Session created for user: " + user.getUsername());
-            response.sendRedirect(request.getContextPath() + "/dashboard");
-        } else {
-            request.setAttribute("error", "Invalid username or password");
-            request.setAttribute("username", username); 
-            System.out.println("Failed login attempt for: " + username);
-            response.sendRedirect(request.getContextPath() + "/login");
-        }
+    if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+        HttpSession session = request.getSession();
+        session.setAttribute(USER_SESSION_KEY, user);
+        System.out.println("Session created for user: " + user.getUsername());
+        response.sendRedirect(request.getContextPath() + "/dashboard");
+    } else {
+        request.setAttribute("error", "Invalid username or password");
+        request.setAttribute("username", username);
+        request.setAttribute("hasTriedLogin", true);
+        forwardToJsp(request, response, "simple-login.jsp");
     }
+}
+
 }
