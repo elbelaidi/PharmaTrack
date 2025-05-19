@@ -11,23 +11,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-/**
- * Simple login servlet for basic authentication.
- */
 @WebServlet("/login")
 public class SimpleLoginServlet extends BaseServlet {
     private final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Forward to simple login JSP
+        request.removeAttribute("error");
         forwardToJsp(request, response, "simple-login.jsp");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username = request.getParameter("username").trim();
+        String password = request.getParameter("password").trim();
 
         User user = userService.findByUsername(username);
 
@@ -38,7 +35,9 @@ public class SimpleLoginServlet extends BaseServlet {
             response.sendRedirect(request.getContextPath() + "/dashboard");
         } else {
             request.setAttribute("error", "Invalid username or password");
-            forwardToJsp(request, response, "simple-login.jsp");
+            request.setAttribute("username", username); 
+            System.out.println("Failed login attempt for: " + username);
+            response.sendRedirect(request.getContextPath() + "/login");
         }
     }
 }

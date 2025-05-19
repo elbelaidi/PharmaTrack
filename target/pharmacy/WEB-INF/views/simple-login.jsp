@@ -148,7 +148,6 @@
                         <input type="checkbox" id="remember" name="remember" class="form-check-input" />
                         <label for="remember" class="form-check-label">Se rappeler du mot de passe</label>
                     </div>
-                    <!-- Hidden field to maintain compatibility with original authentication -->
                     <input type="hidden" name="action" value="login" />
                     
                     <button type="submit" class="btn-login">Se connecter</button>
