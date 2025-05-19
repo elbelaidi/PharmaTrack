@@ -42,6 +42,34 @@ public class MedicationServlet extends BaseServlet {
             // Show edit medication form
             Long id = Long.parseLong(request.getParameter("id"));
             Medication medication = medicationService.findById(id);
+            if (medication != null && medication.getType() != null) {
+                String type = medication.getType().trim();
+                if (!type.isEmpty()) {
+                    // Map plural or variant type values to singular form used in JSP options
+                    switch (type.toLowerCase()) {
+                        case "capsules":
+                            type = "Capsule";
+                            break;
+                        case "tablets":
+                            type = "Tablet";
+                            break;
+                        case "syrups":
+                            type = "Syrup";
+                            break;
+                        case "injections":
+                            type = "Injection";
+                            break;
+                        case "ointments":
+                            type = "Ointment";
+                            break;
+                        default:
+                            // Capitalize first letter, lowercase the rest
+                            type = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
+                            break;
+                    }
+                    medication.setType(type);
+                }
+            }
             request.setAttribute("medication", medication);
             request.setAttribute("suppliers", supplierService.findActive());
             forwardToJsp(request, response, "medications/form.jsp");

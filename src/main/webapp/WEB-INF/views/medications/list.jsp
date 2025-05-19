@@ -252,54 +252,16 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
-                                            <a href="${pageContext.request.contextPath}/medications/view?id=${medication.id}"
-                                               class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="View Details">
-                                                <i class="bi bi-eye action-icon"></i>
-                                            </a>
-                                            <a href="${pageContext.request.contextPath}/medications/edit?id=${medication.id}"
-                                               class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
-                                                <i class="bi bi-pencil action-icon"></i>
-                                            </a>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal${medication.id}" title="Delete">
+                                        <a href="${pageContext.request.contextPath}/medications/edit?id=${medication.id}"
+                                           class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
+                                            <i class="bi bi-pencil action-icon"></i>
+                                        </a>
+                                        <form action="${pageContext.request.contextPath}/medications/delete" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="${medication.id}" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                                                 <i class="bi bi-trash action-icon"></i>
                                             </button>
-                                        </div>
-
-                                        <!-- Delete Modal -->
-                                        <div class="modal fade" id="deleteModal${medication.id}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header bg-danger text-white">
-                                                        <h5 class="modal-title">
-                                                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                                            Confirm Delete
-                                                        </h5>
-                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                                    </div>
-                                                    <div class="modal-body p-4">
-                                                        <p class="mb-1">Are you sure you want to delete this medication?</p>
-                                                        <div class="alert alert-warning mt-3">
-                                                            <strong>Medication Details:</strong><br>
-                                                            <span class="d-block mt-2"><strong>Name:</strong> ${medication.name}</span>
-                                                            <span class="d-block"><strong>Code:</strong> ${medication.code}</span>
-                                                            <span class="d-block"><strong>Current Stock:</strong> ${medication.stock} units</span>
-                                                        </div>
-                                                        <p class="text-danger mb-0"><small><i class="bi bi-info-circle me-1"></i> This action cannot be undone.</small></p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                                            <i class="bi bi-x-circle me-1"></i> Cancel
-                                                        </button>
-                                                        <form action="${pageContext.request.contextPath}/medications/delete" method="post" class="d-inline">
-                                                            <input type="hidden" name="id" value="${medication.id}" />
-                                                            <button type="submit" class="btn btn-danger">
-                                                                <i class="bi bi-trash me-1"></i> Delete
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        </form>
                                         </div>
 
                                     </td>

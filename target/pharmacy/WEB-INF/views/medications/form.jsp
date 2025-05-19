@@ -147,11 +147,11 @@
                                 <label for="type" class="form-label required-field">Type</label>
                                 <select class="form-select" id="type" name="type" required>
                                     <option value="">-- Select Type --</option>
-                                    <option value="Tablet" ${medication.type == 'Tablet' ? 'selected' : ''}>Tablet</option>
-                                    <option value="Capsule" ${medication.type == 'Capsule' ? 'selected' : ''}>Capsule</option>
-                                    <option value="Syrup" ${medication.type == 'Syrup' ? 'selected' : ''}>Syrup</option>
-                                    <option value="Injection" ${medication.type == 'Injection' ? 'selected' : ''}>Injection</option>
-                                    <option value="Ointment" ${medication.type == 'Ointment' ? 'selected' : ''}>Ointment</option>
+                                    <option value="Tablet" <c:if test="${medication.type == 'Tablet'}">selected</c:if>>Tablet</option>
+                                    <option value="Capsule" <c:if test="${medication.type == 'Capsule'}">selected</c:if>>Capsule</option>
+                                    <option value="Syrup" <c:if test="${medication.type == 'Syrup'}">selected</c:if>>Syrup</option>
+                                    <option value="Injection" <c:if test="${medication.type == 'Injection'}">selected</c:if>>Injection</option>
+                                    <option value="Ointment" <c:if test="${medication.type == 'Ointment'}">selected</c:if>>Ointment</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
