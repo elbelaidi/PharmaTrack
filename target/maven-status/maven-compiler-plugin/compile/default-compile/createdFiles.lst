@@ -20,6 +20,7 @@ com\pharmacy\dao\MedicineDAO.class
 com\pharmacy\model\Sale.class
 com\pharmacy\web\LogoutServlet.class
 com\pharmacy\model\Medicine.class
+com\pharmacy\web\AuthenticationFilter.class
 com\pharmacy\model\Prescription$PrescriptionItem.class
 com\pharmacy\model\Order$OrderStatus.class
 com\pharmacy\web\UserServlet.class
